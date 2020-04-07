@@ -1,0 +1,3 @@
+cn\gpmall\search\service\SearchService.class
+cn\gpmall\search\service\ItemSolrService.class
+cn\gpmall\search\service\ItemListService.class

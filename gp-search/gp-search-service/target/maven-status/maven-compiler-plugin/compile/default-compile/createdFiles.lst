@@ -1,0 +1,6 @@
+cn\gpmall\search\service\impl\SearchServiceImpl.class
+cn\gpmall\search\service\impl\ItemListServiceImpl.class
+cn\gpmall\search\message\ItemAddMessageListener.class
+cn\gpmall\search\dao\SearchDao.class
+cn\gpmall\search\service\impl\ItemSolrServiceImpl.class
+cn\gpmall\search\message\MyMessageListener.class
