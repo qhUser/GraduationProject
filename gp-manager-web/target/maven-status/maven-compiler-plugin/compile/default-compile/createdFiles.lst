@@ -1,0 +1,8 @@
+cn\gpmall\controller\TimerTaskController.class
+cn\gpmall\controller\AdminController.class
+cn\gpmall\controller\PageController.class
+cn\gpmall\controller\TimerController.class
+cn\gpmall\interceptor\Interceptor.class
+cn\gpmall\controller\UserController.class
+cn\gpmall\controller\ItemController.class
+cn\gpmall\controller\ItemSolrController.class
