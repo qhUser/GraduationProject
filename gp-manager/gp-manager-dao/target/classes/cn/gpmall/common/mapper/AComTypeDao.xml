@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gpmall.common.mapper.AComTypeDao">
+ <select id="getSwitchItem" resultType="AComType">
+  select id,typeName from a_com_type where visable=1;
+ </select>
+<insert id="addCom" useGeneratedKeys="true" keyProperty="id" parameterType="ACom">
+   insert into a_com(commodityname,lowestprice,nowprice,description,count,satrtdate,
+    enddate,satus,visable,typeid,deupteId,addCount) values(#{commodityname},#{lowestprice},#{nowprice},
+    #{description},#{count},#{satrtdate},#{enddate},#{satus},#{visable},#{typeid},#{deupteId},0);
+</insert>
+<insert id="addCom1" useGeneratedKeys="true" keyProperty="id" parameterType="ACom">
+   insert into a_com(commodityname,lowestprice,nowprice,description,count,satrtdate,
+    enddate,satus,visable,typeid,supplierid,addCount) values(#{commodityname},#{lowestprice},#{nowprice},
+    #{description},#{count},#{satrtdate},#{enddate},1,#{visable},#{typeid},#{deupteId},0);
+</insert>
+<select id="addPhoto" parameterType="APhoto">
+ insert into a_photo(url,objId,visable) values(#{url},#{objId},1);
+</select>
+<select id="getAccept" parameterType="cn.gpmall.common.pojo.Page" resultType="ACom">
+   select id,commodityname,lowestprice,description,count,satrtdate,typeid,deupteId
+   from a_com where visable=1 and satus=0 limit #{nowCount},#{count};
+</select>
+<select id="getDeupte" parameterType="Integer" resultType="String">
+ select nickname from a_user where id=#{id};
+</select>
+<select id="getTypeName" parameterType="Integer" resultType="String">
+select typeName from a_com_type where id=#{id} and visable=1;
+</select>
+<select id="getPhotoUrl" parameterType="Integer" resultType="String">
+select url from a_photo where objId=#{id} and visable=1;
+</select>
+<select id="getSum" resultType="Integer">
+select count(*) from a_com where visable=1 and satus=0;
+</select>
+<select id="getCheck" parameterType="Integer" resultType="ACom">
+select id,commodityname,lowestprice,description,count,satrtdate,endDate,typeid,deupteId
+   from a_com where id=#{id};
+</select>
+<select id="getAcceptCom">
+update a_com set supplierId=#{1},satus=1 where id=#{0};
+</select>
+</mapper>

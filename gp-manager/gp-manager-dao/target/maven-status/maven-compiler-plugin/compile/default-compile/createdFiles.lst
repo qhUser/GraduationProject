@@ -1,0 +1,5 @@
+cn\gpmall\common\mapper\AComTypeDao.class
+cn\gpmall\common\mapper\OrderDao.class
+cn\gpmall\common\mapper\AUserDao.class
+cn\gpmall\common\mapper\AComDao.class
+cn\gpmall\common\mapper\AdminDao.class

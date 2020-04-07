@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gpmall.common.mapper.AUserDao">
+  <resultMap type="AUser" id="aUser">
+  <id property="id" column="id"></id>
+  <result property="loginname" column="loginname"></result>
+  <result property="nickname" column="nickname"></result>
+  <result property="email" column="email"></result>
+  <result property="phonenumber" column="phonenumber"></result>
+  <result property="gender" column="gender"></result>
+  <result property="balance" column="balance"></result>
+  <result property="address" column="address"></result>
+  <association property="userType" javaType="AUsertype">
+  <id property="id" column="id"></id>
+  <result property="usertype" column="usertype"></result>
+  </association>
+  </resultMap>
+  
+  <resultMap type="AOrder" id="aOrder">
+  <id property="id" column="id"/>
+  <result property="price" column="price"/>
+  <association property="aCom" javaType="ACom">
+  <id property="id" column="id"/>
+  <result property="commodityname" column="commodityname"/>
+  </association>
+  <association property="aOrderlist" javaType="AOrderlist">
+  <id property="id" column="id"/>
+  <result property="createdate" column="createdate"/>
+  <result property="isok" column="isok"/>
+  </association>
+  <association property="aUser1" javaType="AUser"> 
+  <id property="id" column="id"/>
+  <result property="id" column="id"/>
+  <result property="loginname" column="loginname"/>
+  </association>
+  </resultMap>
+  
+  
+
+  <select id="getList1" parameterType="Integer" resultMap="aUser">
+    select  a.loginName,a.nickname,a.email,a.phonenumber,a.gender,a.balance,a.address,b.userType 
+    from a_user a left join a_usertype b 
+    on a.level=b.id 
+    where a.id=#{id};
+  </select>
+  <select id="getList2" parameterType="cn.gpmall.common.pojo.UserBalance">
+  update a_user set balance=balance+#{money} where id=#{id};
+  </select>
+  <select id="getList3" parameterType="cn.gpmall.common.pojo.UserBalance">
+  update a_user set password=#{password} where id=#{id};
+  </select>
+  <select id="getList4" parameterType="cn.gpmall.common.pojo.Page" resultMap="aOrder">
+select b.commodityName,c.price,c.id,d.createDate,d.isOk,e.loginName 
+from a_com b,a_order c,a_orderlist d,a_user e
+where c.commodityId=b.id and c.orderListId=d.id and d.userId=e.id and e.id=#{id} and d.isOK>=1
+limit #{nowCount},#{count};
+  </select>
+  
+  <select id="loginEnter" parameterType="String" resultType="AUser">
+  select * from a_user where loginName=#{username} and visable=1;
+  </select>
+   <select id="adminLoginEnter" parameterType="String" resultType="PAdmin">
+  select * from p_admin where loginName=#{username} and visable=1;
+  </select>
+  <select id="register1" parameterType="AUser">
+ insert a_user(loginName,nickName,password,email,phoneNumber,address,level,visable,gender,balance,honesty,createDate) 
+ values(#{loginname},#{nickname},#{password},#{email},#{phonenumber},#{address},1,1,1,0,50,NOW()); 
+  </select>
+  <select id="register2" parameterType="AUser">
+ insert a_user(loginName,nickName,password,email,phoneNumber,address,level,visable,gender,balance,honesty,createDate,organization) 
+ values(#{loginname},#{nickname},#{password},#{email},#{phonenumber},#{address},2,1,1,0,50,NOW(),#{organization}); 
+  </select>
+  <select id="getUserAdd" parameterType="cn.gpmall.common.pojo.Page" resultType="AUser">
+  select * from a_user where level=2 limit #{nowCount},#{count};
+  </select>
+  <select id="getUserAddSum" resultType="Integer">
+  select count(*) from a_user where level=2;
+  </select>
+  <select id="getUserAdopt" parameterType="Integer">
+   update a_user set level=3 where id=#{id};
+  </select>
+  <select id="getUsernoPass" parameterType="Integer">
+   update a_user set level=1 where id=#{id};
+  </select>
+  <select id="getUserList" parameterType="cn.gpmall.common.pojo.Page" resultType="AUser">
+   select * from a_user where level in(1,3) limit #{nowCount},#{count};
+  </select>
+    <select id="getUserListSum" resultType="Integer">
+  select count(*) from a_user where level in(1,3);
+  </select>
+  <select id="getUserBan" parameterType="Integer">
+  update a_user set visable=0 where id=#{id};
+  </select>
+  <select id="getUserListBan" parameterType="cn.gpmall.common.pojo.Page" resultType="AUser">
+  select * from a_user where visable=0 limit #{nowCount},#{count};
+  </select>
+    <select id="getUserListBanSum" resultType="Integer">
+  select count(*) from a_user where visable;
+  </select>
+  <select id="getUserRelieve" parameterType="Integer">
+  update a_user set visable=1 where id=#{id};
+  </select>
+   <select id="getByOrderListId" parameterType="Integer" resultType="AOrder">
+  select * from a_order where id=#{id};
+  </select>
+  <select id="checkBalance"  resultType="Integer">
+ select count(*) from a_user where id=#{0} and balance>=#{1};
+  </select>
+   <select id="checkBySuppId" parameterType="Integer" resultType="Integer">
+ select commodityId from a_order where id=#{id};
+  </select>
+    <select id="checkBySuppId1" parameterType="Integer" resultType="Integer">
+ select supplierId from a_com where id=#{id};
+  </select>
+    <select id="addMoney" >
+ update a_user set balance=balance+#{1} where id=#{0};
+  </select>
+    <select id="cutBack" >
+ update a_user set balance=balance-#{1} where id=#{0};
+  </select>
+    <select id="changeOrder">
+ update a_orderlist set isOk=#{1} where id=#{0};
+  </select>
+     <select id="InserEvaluate" parameterType="AEvaluate">
+ insert a_evaluate(mark,comment,userId,visable) values(#{mark},#{comment},#{userId},1);
+  </select>
+   <select id="getRole" parameterType="Integer" resultType="Integer">
+ select roleId from p_admin_role where adminId=#{0};
+  </select>
+    <select id="getPrivilege" parameterType="Integer" resultType="Integer">
+ select privilegeId from p_role_privilege where roleId=#{0};
+  </select>
+   <select id="getPrivilegeById" parameterType="Integer" resultType="PPrivilege">
+ select * from p_privilege where id=#{0};
+  </select>
+</mapper>

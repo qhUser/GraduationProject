@@ -1,0 +1,14 @@
+cn\gpmall\common\pojo\PRole.class
+cn\gpmall\common\pojo\PRolePrivilegeKey.class
+cn\gpmall\common\pojo\AUsertype.class
+cn\gpmall\common\pojo\APhoto.class
+cn\gpmall\common\pojo\PAdminRoleKey.class
+cn\gpmall\common\pojo\PAdmin.class
+cn\gpmall\common\pojo\ACom.class
+cn\gpmall\common\pojo\PDept.class
+cn\gpmall\common\pojo\AComType.class
+cn\gpmall\common\pojo\AOrderlist.class
+cn\gpmall\common\pojo\AOrder.class
+cn\gpmall\common\pojo\PPrivilege.class
+cn\gpmall\common\pojo\AUser.class
+cn\gpmall\common\pojo\AEvaluate.class

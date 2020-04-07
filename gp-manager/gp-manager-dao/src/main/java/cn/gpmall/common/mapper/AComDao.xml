@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gpmall.common.mapper.AComDao">
+   <select id="getAll"  parameterType="cn.gpmall.common.pojo.Page" resultType="ACom">
+   select id,commodityname,lowestprice,nowprice,description, 
+   count,satrtdate,enddate,satus from a_com 
+    where visable=1  and satus=3
+    limit #{nowCount},#{count};
+   </select>
+   
+    <select id="getAdd"  parameterType="cn.gpmall.common.pojo.Page" resultType="ACom">
+   select id,commodityname,lowestprice,nowprice,description, 
+   count,satrtdate,enddate,satus from a_com 
+    where visable=1 and satus=1 
+    limit #{nowCount},#{count};
+   </select>
+   
+   <select id="getSum3" resultType="Integer">
+    select count(*) from a_com where visable=1  and satus=3;
+   </select>
+   <select id="getSum1" resultType="Integer">
+    select count(*) from a_com where visable=1  and satus=1;
+   </select>
+   
+   <select id="getAdopt" parameterType="Integer">
+    update a_com set satus=3 where id=#{id};
+   </select>
+   
+   <select id="getNoPass" parameterType="Integer">
+     update a_com set satus=2 where id=#{id};
+   </select>
+   
+   <select id="getNew" resultType="ACom">
+    select 
+    id,commodityname,lowestprice,nowprice,description, 
+    count,satrtdate,enddate,satus
+     from a_com where visable=1 and satus=3 order by satrtDate desc limit 0,8;
+   </select>
+   <select id="getonSale" parameterType="java.util.Date" resultType="ACom">
+     select
+     id,commodityname,lowestprice,nowprice,description, 
+    count,satrtdate,enddate,satus
+    from a_com where visable=1 and satus=3 ;
+   </select>
+   <!-- 查询指定商品返回8条记录 -->
+   <select id="getItemList" parameterType="cn.gpmall.common.pojo.Page" resultType="ACom">
+     select
+     id,commodityname,lowestprice,nowprice,description, 
+    count,satrtdate,enddate,satus
+    from a_com where visable=1 and satus=3 and commodityname like "%"#{keyword}"%" 
+     limit #{nowCount},8;
+     ;
+   </select>
+   <!-- 查询指定商品的总记录数 -->
+    <select id="getSumCount" parameterType="String" resultType="Integer">
+     select count(*)  from a_com where visable=1 and satus=3 and commodityname like "%"#{keyword}"%" ;   
+     ;
+   </select> 
+   <select id="getUrl" parameterType="Integer" resultType="String">
+   select url from a_photo where visable=1 and objId=#{id};
+   </select> 
+   
+   <select id="getComAll" resultType="cn.gpmall.common.pojo.SearchItem">
+select a.id,a.commodityName,a.description,a.lowestPrice,b.typeName,c.url
+from a_com a,a_com_type b,a_photo c
+where a.typeId=b.id and c.objId=a.id and a.satus=3 and a.visable=1 and a.endDate>NOW();
+   </select>
+   <select id="getItemById" parameterType="Integer" resultType="cn.gpmall.common.pojo.SearchItem">
+   select a.id,a.commodityName,a.description,a.lowestPrice,b.typeName,c.url
+from a_com a,a_com_type b,a_photo c
+where a.typeId=b.id and c.objId=a.id and a.satus=3 and a.visable=1 and a.id=#{id};
+   </select>
+   <select id="getDetails" parameterType="Integer" resultType="ACom">
+   select * from a_com where id=#{id};
+   </select>
+   <select id="addPrice">
+   update a_com set nowPrice=#{1} where id=#{0};
+   </select>
+   <select id="equalsTime" resultType="ACom">
+   select * from  a_com where  endDate &lt;=NOW() and endDate &gt;=NOW()-INTERVAL 5 Day ;
+   </select>
+    <select id="status" parameterType="Integer" >
+ update  a_com set satus=#{1} where id=#{0};
+ </select>
+   <select id="checkMoney" parameterType="Integer" resultType="Double">
+ select balance from a_user where id=#{id};
+ </select>
+  <select id="checkBail" parameterType="Integer" >
+ update a_user set balance=balance-200,bail=bail+200 where id=#{id};
+ </select>
+ <select id="getUserById" parameterType="Integer" resultType="Integer">
+ select supplierId from a_com where id=#{0};
+ </select>
+  <select id="getEvaluate" parameterType="Integer" resultType="AEvaluate">
+ select * from a_evaluate where userId=#{0};
+ </select>
+  <select id="getUserName" parameterType="Integer" resultType="String">
+ select loginName from a_user where id=#{0};
+ </select>
+</mapper>

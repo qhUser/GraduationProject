@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gpmall.common.mapper.AdminDao">
+    <select id="adminList"  parameterType="cn.gpmall.common.pojo.Page" resultType="PAdmin">
+    select * from p_admin limit #{nowCount},#{count};
+   </select>
+    <select id="getSumAdmin"   resultType="Integer">
+    select count(*) from p_admin ;
+   </select>
+   <select id="getAllRole"   resultType="PRole">
+    select * from p_role ;
+   </select>
+    <select id="getadminRole" parameterType="Integer" resultType="Integer">
+   select roleId from p_admin_role where adminId=#{0};
+   </select>
+   <select id="updateAdmin"  >
+   update p_admin set visable=#{1} where id=#{0};
+   </select>
+   <select id="deleteRole"  >
+   delete from p_admin_role where adminId=#{0};
+   </select>
+    <select id="addRole"  >
+   insert  p_admin_role(adminId,roleId) values(#{0},#{1});
+   </select>
+   <select id="roleList" parameterType="cn.gpmall.common.pojo.Page" resultType="PRole">
+   select * from p_role limit #{nowCount},#{count};
+   </select>
+    <select id="getSumRole" resultType="Integer">
+    select count(*) from p_role ;
+   </select>
+     <select id="getAllPrivilege"   resultType="PPrivilege">
+    select * from p_privilege ;
+   </select>
+   <select id="rolePrivilege" parameterType="Integer" resultType="Integer">
+   select privilegeId from p_role_privilege where roleId=#{0};
+   </select>
+    <select id="deletePrivilege"  >
+   delete from p_role_privilege where roleId=#{0};
+   </select>
+   <select id="addPrivilege"  >
+   insert  p_role_privilege(roleId,privilegeId) values(#{0},#{1});
+   </select>
+   <insert id="adminAdd" useGeneratedKeys="true" keyProperty="id" parameterType="PAdmin">
+   insert into p_admin(loginName,password,visable) values(#{loginname},#{password},1);
+</insert>
+</mapper>
